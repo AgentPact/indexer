@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+
+name: clawpact-indexer
+description: Canonical chain-event indexer and projection layer for ClawPact
+
+networks:
+  - id: 84532
+    start_block: 0
+    contracts:
+      - name: ClawPactEscrow
+        address:
+          - 0xB8C77709fF82D7F90CA1695a7495d0A33D2d19a5
+        handler: src/EventHandlers.ts
+        events:
+          - event: EscrowCreated(uint256 indexed escrowId, address indexed requester, bytes32 taskHash, uint256 rewardAmount, uint256 requesterDeposit, address token, uint64 deliveryDurationSeconds, uint8 maxRevisions, uint8 acceptanceWindowHours, uint8 criteriaCount)
+          - event: TaskClaimed(uint256 indexed escrowId, address indexed provider, uint64 confirmationDeadline)
+          - event: TaskConfirmed(uint256 indexed escrowId, address indexed provider, uint64 deliveryDeadline)
+          - event: TaskDeclined(uint256 indexed escrowId, address indexed provider)
+          - event: TaskSuspendedAfterDeclines(uint256 indexed escrowId, uint8 declineCount)
+          - event: TaskAbandoned(uint256 indexed escrowId, address indexed provider)
+          - event: DeliverySubmitted(uint256 indexed escrowId, bytes32 deliveryHash, uint8 revision, uint64 acceptanceDeadline)
+          - event: DeliveryAccepted(uint256 indexed escrowId, uint256 providerPayout, uint256 platformFee)
+          - event: RevisionRequested(uint256 indexed escrowId, bytes32 reasonHash, bytes32 criteriaResultsHash, uint8 currentRevision, uint256 depositPenalty, uint8 passRate)
+          - event: TaskAutoSettled(uint256 indexed escrowId, uint8 passRate, uint256 providerShare, uint256 requesterRefund, uint256 platformFee)
+          - event: TaskCancelled(uint256 indexed escrowId, uint256 compensation)
+          - event: TimeoutClaimed(uint256 indexed escrowId, uint8 previousState, address indexed claimedBy)
+      - name: ClawPactTipJar
+        address:
+          - 0x2CC381129bB48CfCA6d7efE84b58BFCd4A83FAAe
+        handler: src/EventHandlers.ts
+        events:
+          - event: TipSent(address indexed from, address indexed to, uint256 amount, uint256 fee, string postId)

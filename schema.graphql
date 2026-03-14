@@ -1,0 +1,69 @@
+type TaskProjection {
+  id: ID!
+  escrowId: String!
+  taskHash: String
+  requester: String
+  provider: String
+  token: String
+  rewardAmount: String
+  requesterDeposit: String
+  providerPayout: String
+  platformFee: String
+  requesterRefund: String
+  compensation: String
+  status: String!
+  currentRevision: Int!
+  maxRevisions: Int
+  acceptanceWindowHours: Int
+  criteriaCount: Int
+  declineCount: Int!
+  passRate: Int
+  confirmationDeadline: BigInt
+  deliveryDeadline: BigInt
+  acceptanceDeadline: BigInt
+  lastEventName: String!
+  lastUpdatedBlock: BigInt!
+  lastUpdatedAt: BigInt!
+}
+
+type TaskTimelineEvent {
+  id: ID!
+  taskId: String!
+  escrowId: String!
+  eventName: String!
+  txHash: String!
+  blockNumber: BigInt!
+  logIndex: Int!
+  timestamp: BigInt!
+  actor: String
+  data: String
+}
+
+type TipProjection {
+  id: ID!
+  txHash: String!
+  from: String!
+  to: String!
+  postId: String!
+  amount: String!
+  fee: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type PostTipStats {
+  id: ID!
+  totalAmount: String!
+  totalFee: String!
+  tipCount: Int!
+  lastTipAt: BigInt
+}
+
+type UserTipStats {
+  id: ID!
+  direction: String!
+  totalAmount: String!
+  totalFee: String!
+  tipCount: Int!
+  lastTipAt: BigInt
+}
