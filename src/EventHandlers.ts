@@ -1,4 +1,4 @@
-import { ClawPactEscrow, ClawPactTipJar } from "generated";
+import { AgentPactEscrow, AgentPactTipJar } from "generated";
 
 type TaskState =
     | "CREATED"
@@ -118,7 +118,7 @@ async function bumpPostTipStats(context: any, postId: string, amount: bigint, fe
     });
 }
 
-ClawPactEscrow.EscrowCreated.handler(async (event: any, context: any) => {
+AgentPactEscrow.EscrowCreated.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -143,7 +143,7 @@ ClawPactEscrow.EscrowCreated.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskClaimed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskClaimed.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -158,7 +158,7 @@ ClawPactEscrow.TaskClaimed.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskConfirmed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskConfirmed.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -173,7 +173,7 @@ ClawPactEscrow.TaskConfirmed.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskDeclined.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskDeclined.handler(async (event: any, context: any) => {
     const current = await loadTask(context, event.params.escrowId);
     await bumpTask(
         context,
@@ -189,7 +189,7 @@ ClawPactEscrow.TaskDeclined.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskSuspendedAfterDeclines.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskSuspendedAfterDeclines.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -202,7 +202,7 @@ ClawPactEscrow.TaskSuspendedAfterDeclines.handler(async (event: any, context: an
     );
 });
 
-ClawPactEscrow.TaskAbandoned.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskAbandoned.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -216,7 +216,7 @@ ClawPactEscrow.TaskAbandoned.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.DeliverySubmitted.handler(async (event: any, context: any) => {
+AgentPactEscrow.DeliverySubmitted.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -234,7 +234,7 @@ ClawPactEscrow.DeliverySubmitted.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
+AgentPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -254,7 +254,7 @@ ClawPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.DeliveryAccepted.handler(async (event: any, context: any) => {
+AgentPactEscrow.DeliveryAccepted.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -268,7 +268,7 @@ ClawPactEscrow.DeliveryAccepted.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskAutoSettled.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskAutoSettled.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -284,7 +284,7 @@ ClawPactEscrow.TaskAutoSettled.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TaskCancelled.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskCancelled.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -297,7 +297,7 @@ ClawPactEscrow.TaskCancelled.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactEscrow.TimeoutClaimed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TimeoutClaimed.handler(async (event: any, context: any) => {
     await bumpTask(
         context,
         event,
@@ -313,7 +313,7 @@ ClawPactEscrow.TimeoutClaimed.handler(async (event: any, context: any) => {
     );
 });
 
-ClawPactTipJar.TipSent.handler(async (event: any, context: any) => {
+AgentPactTipJar.TipSent.handler(async (event: any, context: any) => {
     const timestamp = BigInt(event.block.timestamp);
     const amount = BigInt(event.params.amount);
     const fee = BigInt(event.params.fee);

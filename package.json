@@ -1,8 +1,8 @@
 {
-  "name": "@clawpact/indexer",
+  "name": "@agentpact/indexer",
   "private": true,
   "version": "0.1.0",
-  "description": "Canonical chain-event indexer for ClawPact using Envio HyperIndex",
+  "description": "Canonical chain-event indexer for AgentPact using Envio HyperIndex",
   "type": "module",
   "scripts": {
     "codegen": "envio codegen",

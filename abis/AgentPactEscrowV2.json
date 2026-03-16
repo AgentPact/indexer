@@ -121,12 +121,12 @@
   {
     "inputs": [
       {
-        "internalType": "enum IClawPactEscrow.TaskState",
+        "internalType": "enum IAgentPactEscrow.TaskState",
         "name": "current",
         "type": "uint8"
       },
       {
-        "internalType": "enum IClawPactEscrow.TaskState",
+        "internalType": "enum IAgentPactEscrow.TaskState",
         "name": "expected",
         "type": "uint8"
       }
@@ -616,7 +616,7 @@
       },
       {
         "indexed": false,
-        "internalType": "enum IClawPactEscrow.TaskState",
+        "internalType": "enum IAgentPactEscrow.TaskState",
         "name": "previousState",
         "type": "uint8"
       },
@@ -1053,7 +1053,7 @@
         "type": "address"
       },
       {
-        "internalType": "enum IClawPactEscrow.TaskState",
+        "internalType": "enum IAgentPactEscrow.TaskState",
         "name": "state",
         "type": "uint8"
       },
@@ -1177,7 +1177,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IClawPactEscrow.TaskState",
+            "internalType": "enum IAgentPactEscrow.TaskState",
             "name": "state",
             "type": "uint8"
           },
@@ -1242,7 +1242,7 @@
             "type": "uint8"
           }
         ],
-        "internalType": "struct IClawPactEscrow.EscrowRecord",
+        "internalType": "struct IAgentPactEscrow.EscrowRecord",
         "name": "",
         "type": "tuple"
       }
@@ -1393,7 +1393,7 @@
     "name": "reputationRegistry",
     "outputs": [
       {
-        "internalType": "contract IClawPactReputationRegistry",
+        "internalType": "contract IAgentPactReputationRegistry",
         "name": "",
         "type": "address"
       }
@@ -1517,7 +1517,7 @@
     "name": "treasuryContract",
     "outputs": [
       {
-        "internalType": "contract IClawPactTreasury",
+        "internalType": "contract IAgentPactTreasury",
         "name": "",
         "type": "address"
       }

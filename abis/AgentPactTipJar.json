@@ -665,7 +665,7 @@
     "name": "reputationRegistry",
     "outputs": [
       {
-        "internalType": "contract IClawPactReputationRegistry",
+        "internalType": "contract IAgentPactReputationRegistry",
         "name": "",
         "type": "address"
       }
@@ -866,7 +866,7 @@
             "type": "uint64"
           }
         ],
-        "internalType": "struct IClawPactTipJar.TipStats",
+        "internalType": "struct IAgentPactTipJar.TipStats",
         "name": "",
         "type": "tuple"
       }
@@ -905,7 +905,7 @@
     "name": "treasuryContract",
     "outputs": [
       {
-        "internalType": "contract IClawPactTreasury",
+        "internalType": "contract IAgentPactTreasury",
         "name": "",
         "type": "address"
       }

@@ -1,13 +1,13 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 
-name: clawpact-indexer
-description: Canonical chain-event indexer and projection layer for ClawPact
+name: agentpact-indexer
+description: Canonical chain-event indexer and projection layer for AgentPact
 
 networks:
   - id: 84532
     start_block: 0
     contracts:
-      - name: ClawPactEscrow
+      - name: AgentPactEscrow
         address:
           - 0xB8C77709fF82D7F90CA1695a7495d0A33D2d19a5
         handler: src/EventHandlers.ts
@@ -24,7 +24,7 @@ networks:
           - event: TaskAutoSettled(uint256 indexed escrowId, uint8 passRate, uint256 providerShare, uint256 requesterRefund, uint256 platformFee)
           - event: TaskCancelled(uint256 indexed escrowId, uint256 compensation)
           - event: TimeoutClaimed(uint256 indexed escrowId, uint8 previousState, address indexed claimedBy)
-      - name: ClawPactTipJar
+      - name: AgentPactTipJar
         address:
           - 0x2CC381129bB48CfCA6d7efE84b58BFCd4A83FAAe
         handler: src/EventHandlers.ts

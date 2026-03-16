@@ -1,4 +1,4 @@
 declare module "generated" {
-  export const ClawPactEscrow: any;
-  export const ClawPactTipJar: any;
+  export const AgentPactEscrow: any;
+  export const AgentPactTipJar: any;
 }

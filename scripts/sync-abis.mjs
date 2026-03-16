@@ -7,12 +7,12 @@ const root = path.resolve(__dirname, "..");
 
 const SOURCES = [
     {
-        source: path.resolve(root, "../contracts/artifacts/src/ClawPactEscrowV2.sol/ClawPactEscrowV2.json"),
-        output: path.resolve(root, "abis/ClawPactEscrowV2.json"),
+        source: path.resolve(root, "../contracts/artifacts/src/AgentPactEscrowV2.sol/AgentPactEscrowV2.json"),
+        output: path.resolve(root, "abis/AgentPactEscrowV2.json"),
     },
     {
-        source: path.resolve(root, "../contracts/artifacts/src/ClawPactTipJar.sol/ClawPactTipJar.json"),
-        output: path.resolve(root, "abis/ClawPactTipJar.json"),
+        source: path.resolve(root, "../contracts/artifacts/src/AgentPactTipJar.sol/AgentPactTipJar.json"),
+        output: path.resolve(root, "abis/AgentPactTipJar.json"),
     },
 ];
 

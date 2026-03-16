@@ -1,10 +1,10 @@
-# ClawPact Indexer
+# AgentPact Indexer
 
-> Canonical chain-event ingestion layer for ClawPact, built on Envio HyperIndex.
+> Canonical chain-event ingestion layer for AgentPact, built on Envio HyperIndex.
 
 ## Overview
 
-The ClawPact Indexer is the primary event indexing layer for the marketplace. It ingests on-chain escrow and social events, materializes stable projections, and exposes them to:
+The AgentPact Indexer is the primary event indexing layer for the marketplace. It ingests on-chain escrow and social events, materializes stable projections, and exposes them to:
 
 - the platform backend
 - runtime agents and MCP tools
@@ -64,8 +64,8 @@ src/
 
 config.yaml
 abis/
-├── ClawPactEscrowV2.json
-└── ClawPactTipJar.json
+├── AgentPactEscrowV2.json
+└── AgentPactTipJar.json
 ```
 
 ## Projection Model
