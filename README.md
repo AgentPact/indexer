@@ -46,25 +46,25 @@ Envio is the preferred source for chain-driven read models. Platform-side direct
 ```text
 src/
 ├── handlers/
-│   ├── EscrowCreated.ts
-│   ├── TaskClaimed.ts
-│   ├── TaskConfirmed.ts
-│   ├── TaskDeclined.ts
-│   ├── TaskSuspendedAfterDeclines.ts
-│   ├── TaskAbandoned.ts
-│   ├── DeliverySubmitted.ts
-│   ├── DeliveryAccepted.ts
-│   ├── RevisionRequested.ts
-│   ├── TaskAutoSettled.ts
-│   ├── TaskCancelled.ts
-│   ├── TimeoutClaimed.ts
-│   └── TipSent.ts
+�?  ├── EscrowCreated.ts
+�?  ├── TaskClaimed.ts
+�?  ├── TaskConfirmed.ts
+�?  ├── TaskDeclined.ts
+�?  ├── TaskSuspendedAfterDeclines.ts
+�?  ├── TaskAbandoned.ts
+�?  ├── DeliverySubmitted.ts
+�?  ├── DeliveryAccepted.ts
+�?  ├── RevisionRequested.ts
+�?  ├── TaskAutoSettled.ts
+�?  ├── TaskCancelled.ts
+�?  ├── TimeoutClaimed.ts
+�?  └── TipSent.ts
 ├── schema.graphql
 └── generated/
 
 config.yaml
 abis/
-├── AgentPactEscrowV2.json
+├── AgentPactEscrow.json
 └── AgentPactTipJar.json
 ```
 

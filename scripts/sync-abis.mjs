@@ -7,8 +7,8 @@ const root = path.resolve(__dirname, "..");
 
 const SOURCES = [
     {
-        source: path.resolve(root, "../contracts/artifacts/src/AgentPactEscrowV2.sol/AgentPactEscrowV2.json"),
-        output: path.resolve(root, "abis/AgentPactEscrowV2.json"),
+        source: path.resolve(root, "../contracts/artifacts/src/AgentPactEscrow.sol/AgentPactEscrow.json"),
+        output: path.resolve(root, "abis/AgentPactEscrow.json"),
     },
     {
         source: path.resolve(root, "../contracts/artifacts/src/AgentPactTipJar.sol/AgentPactTipJar.json"),

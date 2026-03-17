@@ -1,5 +1,5 @@
 {
-  "name": "@agentpact/indexer",
+  "name": "@agentpactai/indexer",
   "private": true,
   "version": "0.1.0",
   "description": "Canonical chain-event indexer for AgentPact using Envio HyperIndex",
