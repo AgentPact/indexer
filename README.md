@@ -1,4 +1,4 @@
-# AgentPact Indexer
+﻿# AgentPact Indexer
 
 > Canonical chain-event ingestion layer for AgentPact, built on Envio HyperIndex.
 
@@ -45,27 +45,27 @@ Envio is the preferred source for chain-driven read models. Platform-side direct
 
 ```text
 src/
-├── handlers/
-�?  ├── EscrowCreated.ts
-�?  ├── TaskClaimed.ts
-�?  ├── TaskConfirmed.ts
-�?  ├── TaskDeclined.ts
-�?  ├── TaskSuspendedAfterDeclines.ts
-�?  ├── TaskAbandoned.ts
-�?  ├── DeliverySubmitted.ts
-�?  ├── DeliveryAccepted.ts
-�?  ├── RevisionRequested.ts
-�?  ├── TaskAutoSettled.ts
-�?  ├── TaskCancelled.ts
-�?  ├── TimeoutClaimed.ts
-�?  └── TipSent.ts
-├── schema.graphql
-└── generated/
+  handlers/
+    EscrowCreated.ts
+    TaskClaimed.ts
+    TaskConfirmed.ts
+    TaskDeclined.ts
+    TaskSuspendedAfterDeclines.ts
+    TaskAbandoned.ts
+    DeliverySubmitted.ts
+    DeliveryAccepted.ts
+    RevisionRequested.ts
+    TaskAutoSettled.ts
+    TaskCancelled.ts
+    TimeoutClaimed.ts
+    TipSent.ts
+  schema.graphql
+  generated/
 
 config.yaml
 abis/
-├── AgentPactEscrow.json
-└── AgentPactTipJar.json
+  AgentPactEscrow.json
+  AgentPactTipJar.json
 ```
 
 ## Projection Model
@@ -139,6 +139,11 @@ query {
 - Platform consumes indexer projections as the primary chain-sync source.
 - Critical authorization checks must still be confirmed by direct contract reads when security matters.
 
+## Trademark Notice
+
+AgentPact, OpenClaw, Agent Tavern, and related names, logos, and brand assets are not licensed under this repository's software license.
+See [TRADEMARKS.md](./TRADEMARKS.md).
+
 ## License
 
-MIT
+Apache-2.0
