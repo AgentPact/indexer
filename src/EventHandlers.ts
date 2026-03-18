@@ -1,4 +1,4 @@
-import { AgentPactEscrow, AgentPactTipJar } from "generated";
+import { AgentPactEscrow, AgentPactTipJar } from "../generated";
 
 type TaskState =
     | "CREATED"
@@ -32,26 +32,26 @@ async function loadTask(context: any, escrowId: bigint) {
     return {
         id,
         escrowId: id,
-        taskHash: null,
-        requester: null,
-        provider: null,
-        token: null,
-        rewardAmount: null,
-        requesterDeposit: null,
-        providerPayout: null,
-        platformFee: null,
-        requesterRefund: null,
-        compensation: null,
+        taskHash: undefined,
+        requester: undefined,
+        provider: undefined,
+        token: undefined,
+        rewardAmount: undefined,
+        requesterDeposit: undefined,
+        providerPayout: undefined,
+        platformFee: undefined,
+        requesterRefund: undefined,
+        compensation: undefined,
         status: "CREATED" as TaskState,
         currentRevision: 0,
-        maxRevisions: null,
-        acceptanceWindowHours: null,
-        criteriaCount: null,
+        maxRevisions: undefined,
+        acceptanceWindowHours: undefined,
+        criteriaCount: undefined,
         declineCount: 0,
-        passRate: null,
-        confirmationDeadline: null,
-        deliveryDeadline: null,
-        acceptanceDeadline: null,
+        passRate: undefined,
+        confirmationDeadline: undefined,
+        deliveryDeadline: undefined,
+        acceptanceDeadline: undefined,
         lastEventName: "EscrowCreated",
         lastUpdatedBlock: 0n,
         lastUpdatedAt: 0n,
@@ -65,7 +65,7 @@ async function upsertTask(context: any, escrowId: bigint, patch: Record<string, 
 }
 
 function normalizeAddress(value: string | null | undefined) {
-    return value ? value.toLowerCase() : null;
+    return value ? value.toLowerCase() : undefined;
 }
 
 async function addTimelineEvent(context: any, event: any, escrowId: bigint, eventName: string, actor?: string | null, data?: unknown) {
@@ -79,7 +79,7 @@ async function addTimelineEvent(context: any, event: any, escrowId: bigint, even
         logIndex: Number(event.logIndex),
         timestamp: BigInt(event.block.timestamp),
         actor: normalizeAddress(actor),
-        data: data == null ? null : JSON.stringify(data),
+        data: data == null ? undefined : JSON.stringify(data),
     });
 }
 
@@ -118,7 +118,7 @@ async function bumpPostTipStats(context: any, postId: string, amount: bigint, fe
     });
 }
 
-AgentPactEscrow.EscrowCreated.handler(async (event: any, context: any) => {
+AgentPactEscrow.EscrowCreated.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -143,7 +143,7 @@ AgentPactEscrow.EscrowCreated.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskClaimed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskClaimed.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -158,7 +158,7 @@ AgentPactEscrow.TaskClaimed.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskConfirmed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskConfirmed.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -173,7 +173,7 @@ AgentPactEscrow.TaskConfirmed.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskDeclined.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskDeclined.handler(async ({ event, context }: any) => {
     const current = await loadTask(context, event.params.escrowId);
     await bumpTask(
         context,
@@ -189,7 +189,7 @@ AgentPactEscrow.TaskDeclined.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskSuspendedAfterDeclines.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskSuspendedAfterDeclines.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -202,7 +202,7 @@ AgentPactEscrow.TaskSuspendedAfterDeclines.handler(async (event: any, context: a
     );
 });
 
-AgentPactEscrow.TaskAbandoned.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskAbandoned.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -216,7 +216,7 @@ AgentPactEscrow.TaskAbandoned.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.DeliverySubmitted.handler(async (event: any, context: any) => {
+AgentPactEscrow.DeliverySubmitted.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -227,14 +227,14 @@ AgentPactEscrow.DeliverySubmitted.handler(async (event: any, context: any) => {
             acceptanceDeadline: BigInt(event.params.acceptanceDeadline),
             lastEventName: "DeliverySubmitted",
         },
-        null,
+        undefined,
         {
             deliveryHash: event.params.deliveryHash,
         }
     );
 });
 
-AgentPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
+AgentPactEscrow.RevisionRequested.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -245,7 +245,7 @@ AgentPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
             passRate: Number(event.params.passRate),
             lastEventName: "RevisionRequested",
         },
-        null,
+        undefined,
         {
             reasonHash: event.params.reasonHash,
             criteriaResultsHash: event.params.criteriaResultsHash,
@@ -254,7 +254,7 @@ AgentPactEscrow.RevisionRequested.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.DeliveryAccepted.handler(async (event: any, context: any) => {
+AgentPactEscrow.DeliveryAccepted.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -268,7 +268,7 @@ AgentPactEscrow.DeliveryAccepted.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskAutoSettled.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskAutoSettled.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -284,7 +284,7 @@ AgentPactEscrow.TaskAutoSettled.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TaskCancelled.handler(async (event: any, context: any) => {
+AgentPactEscrow.TaskCancelled.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -297,7 +297,7 @@ AgentPactEscrow.TaskCancelled.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactEscrow.TimeoutClaimed.handler(async (event: any, context: any) => {
+AgentPactEscrow.TimeoutClaimed.handler(async ({ event, context }: any) => {
     await bumpTask(
         context,
         event,
@@ -313,7 +313,7 @@ AgentPactEscrow.TimeoutClaimed.handler(async (event: any, context: any) => {
     );
 });
 
-AgentPactTipJar.TipSent.handler(async (event: any, context: any) => {
+AgentPactTipJar.TipSent.handler(async ({ event, context }: any) => {
     const timestamp = BigInt(event.block.timestamp);
     const amount = BigInt(event.params.amount);
     const fee = BigInt(event.params.fee);

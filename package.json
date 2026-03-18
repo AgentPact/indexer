@@ -3,11 +3,13 @@
   "private": true,
   "version": "0.1.0",
   "description": "Canonical chain-event indexer for AgentPact using Envio HyperIndex",
-  "type": "module",
   "scripts": {
     "codegen": "envio codegen",
     "dev": "envio dev",
     "start": "envio start",
+    "docker:codegen": "node ./scripts/docker-envio.mjs codegen",
+    "docker:start": "node ./scripts/docker-envio.mjs start",
+    "docker:down": "node ./scripts/docker-envio.mjs down",
     "sync:abis": "node ./scripts/sync-abis.mjs",
     "typecheck": "tsc --noEmit"
   },
