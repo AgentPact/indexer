@@ -22,6 +22,11 @@
   },
   {
     "inputs": [],
+    "name": "DeadlinePassed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ECDSAInvalidSignature",
     "type": "error"
   },
@@ -66,6 +71,11 @@
   {
     "inputs": [],
     "name": "FailedCall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FeeTooHigh",
     "type": "error"
   },
   {
@@ -195,6 +205,11 @@
   {
     "inputs": [],
     "name": "SignatureExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TaskSuspended",
     "type": "error"
   },
   {
@@ -403,6 +418,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldFeeBps",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newFeeBps",
+        "type": "uint256"
+      }
+    ],
+    "name": "PlatformFeeUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "uint256",
         "name": "escrowId",
@@ -535,55 +569,11 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "confirmationDeadline",
-        "type": "uint64"
-      }
-    ],
-    "name": "TaskClaimed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "escrowId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
         "name": "deliveryDeadline",
         "type": "uint64"
       }
     ],
-    "name": "TaskConfirmed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "escrowId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      }
-    ],
-    "name": "TaskDeclined",
+    "name": "TaskClaimed",
     "type": "event"
   },
   {
@@ -658,12 +648,12 @@
   },
   {
     "inputs": [],
-    "name": "CONFIRMATION_WINDOW",
+    "name": "DEFAULT_PENALTY_PLATFORM_BPS",
     "outputs": [
       {
-        "internalType": "uint64",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint64"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -671,12 +661,25 @@
   },
   {
     "inputs": [],
-    "name": "MAX_DECLINE_COUNT",
+    "name": "DEFAULT_PLATFORM_FEE_BPS",
     "outputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint8"
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_PLATFORM_FEE_BPS",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -690,19 +693,6 @@
         "internalType": "uint8",
         "name": "",
         "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "PLATFORM_FEE_BPS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -819,19 +809,6 @@
         "type": "uint256"
       }
     ],
-    "name": "claimConfirmationTimeout",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "escrowId",
-        "type": "uint256"
-      }
-    ],
     "name": "claimDeliveryTimeout",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -861,19 +838,6 @@
       }
     ],
     "name": "claimTask",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "escrowId",
-        "type": "uint256"
-      }
-    ],
-    "name": "confirmTask",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -930,19 +894,6 @@
       }
     ],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "escrowId",
-        "type": "uint256"
-      }
-    ],
-    "name": "declineTask",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1088,11 +1039,6 @@
         "type": "uint64"
       },
       {
-        "internalType": "uint64",
-        "name": "confirmationDeadline",
-        "type": "uint64"
-      },
-      {
         "internalType": "uint8",
         "name": "maxRevisions",
         "type": "uint8"
@@ -1209,11 +1155,6 @@
           {
             "internalType": "uint64",
             "name": "acceptanceDeadline",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint64",
-            "name": "confirmationDeadline",
             "type": "uint64"
           },
           {
@@ -1344,6 +1285,32 @@
   },
   {
     "inputs": [],
+    "name": "penaltyPlatformBps",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "platformFeeBps",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "platformFund",
     "outputs": [
       {
@@ -1438,6 +1405,32 @@
       }
     ],
     "name": "setAllowedToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_bps",
+        "type": "uint16"
+      }
+    ],
+    "name": "setPenaltyPlatformBps",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "newFeeBps",
+        "type": "uint16"
+      }
+    ],
+    "name": "setPlatformFeeBps",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

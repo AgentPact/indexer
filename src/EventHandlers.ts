@@ -2,7 +2,6 @@ import { AgentPactEscrow, AgentPactTipJar } from "../generated";
 
 type TaskState =
     | "CREATED"
-    | "CONFIRMATION_PENDING"
     | "WORKING"
     | "DELIVERED"
     | "IN_REVISION"
@@ -150,40 +149,9 @@ AgentPactEscrow.TaskClaimed.handler(async ({ event, context }: any) => {
         event.params.escrowId,
         {
             provider: normalizeAddress(event.params.provider),
-            status: "CONFIRMATION_PENDING",
-            confirmationDeadline: BigInt(event.params.confirmationDeadline),
-            lastEventName: "TaskClaimed",
-        },
-        event.params.provider
-    );
-});
-
-AgentPactEscrow.TaskConfirmed.handler(async ({ event, context }: any) => {
-    await bumpTask(
-        context,
-        event,
-        event.params.escrowId,
-        {
-            provider: normalizeAddress(event.params.provider),
             status: "WORKING",
             deliveryDeadline: BigInt(event.params.deliveryDeadline),
-            lastEventName: "TaskConfirmed",
-        },
-        event.params.provider
-    );
-});
-
-AgentPactEscrow.TaskDeclined.handler(async ({ event, context }: any) => {
-    const current = await loadTask(context, event.params.escrowId);
-    await bumpTask(
-        context,
-        event,
-        event.params.escrowId,
-        {
-            provider: normalizeAddress(event.params.provider),
-            status: "CREATED",
-            declineCount: Number(current.declineCount ?? 0) + 1,
-            lastEventName: "TaskDeclined",
+            lastEventName: "TaskClaimed",
         },
         event.params.provider
     );

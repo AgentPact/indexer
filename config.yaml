@@ -18,9 +18,7 @@ networks:
         handler: src/EventHandlers.ts
         events:
           - event: EscrowCreated(uint256 indexed escrowId, address indexed requester, bytes32 taskHash, uint256 rewardAmount, uint256 requesterDeposit, address token, uint64 deliveryDurationSeconds, uint8 maxRevisions, uint8 acceptanceWindowHours, uint8 criteriaCount)
-          - event: TaskClaimed(uint256 indexed escrowId, address indexed provider, uint64 confirmationDeadline)
-          - event: TaskConfirmed(uint256 indexed escrowId, address indexed provider, uint64 deliveryDeadline)
-          - event: TaskDeclined(uint256 indexed escrowId, address indexed provider)
+          - event: TaskClaimed(uint256 indexed escrowId, address indexed provider, uint64 deliveryDeadline)
           - event: TaskSuspendedAfterDeclines(uint256 indexed escrowId, uint8 declineCount)
           - event: TaskAbandoned(uint256 indexed escrowId, address indexed provider)
           - event: DeliverySubmitted(uint256 indexed escrowId, bytes32 deliveryHash, uint8 revision, uint64 acceptanceDeadline)

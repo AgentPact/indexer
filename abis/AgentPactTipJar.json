@@ -629,6 +629,19 @@
   },
   {
     "inputs": [],
+    "name": "platformFund",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "platformSigner",
     "outputs": [
       {
@@ -729,6 +742,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "newPlatformFund",
+        "type": "address"
+      }
+    ],
+    "name": "setPlatformFund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "newSigner",
         "type": "address"
       }
@@ -747,19 +773,6 @@
       }
     ],
     "name": "setReputationRegistry",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newTreasury",
-        "type": "address"
-      }
-    ],
-    "name": "setTreasury",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
