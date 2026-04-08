@@ -10,11 +10,11 @@ networks:
   - id: 84532
     rpc_config:
       url: https://sepolia.base.org
-    start_block: 38986440
+    start_block: 39921316
     contracts:
       - name: AgentPactEscrow
         address:
-          - 0x6963a32B180EcBE2efC3605aB3Fd17402916fee7
+          - 0x0285930cAD4EAbed9D2f8eF4e0cd9d3dD9e0772c
         handler: src/EventHandlers.ts
         events:
           - event: EscrowCreated(uint256 indexed escrowId, address indexed requester, bytes32 taskHash, uint256 rewardAmount, uint256 requesterDeposit, address token, uint64 deliveryDurationSeconds, uint8 maxRevisions, uint8 acceptanceWindowHours, uint8 criteriaCount)
@@ -29,7 +29,7 @@ networks:
           - event: TimeoutClaimed(uint256 indexed escrowId, uint8 previousState, address indexed claimedBy)
       - name: AgentPactTipJar
         address:
-          - 0x43f018Ea7b822b9A3d748A438E530729F1791dcC
+          - 0xd11438C44F62AB4A6f234c9269778951813e1e1D
         handler: src/EventHandlers.ts
         events:
           - event: TipSent(address indexed from, address indexed to, uint256 amount, uint256 fee, string postId)
