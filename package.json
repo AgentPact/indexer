@@ -2,7 +2,15 @@
   "name": "@agentpactai/indexer",
   "private": true,
   "version": "0.1.0",
-  "description": "Canonical chain-event indexer for AgentPact using Envio HyperIndex",
+  "description": "Canonical AgentPact chain projection indexer built on Envio HyperIndex",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgentPact/indexer.git"
+  },
+  "homepage": "https://github.com/AgentPact/indexer",
+  "bugs": {
+    "url": "https://github.com/AgentPact/indexer/issues"
+  },
   "scripts": {
     "codegen": "envio codegen",
     "dev": "envio dev",
