@@ -6,10 +6,8 @@ type TaskState =
     | "DELIVERED"
     | "IN_REVISION"
     | "ACCEPTED"
-    | "AUTO_SETTLED"
+    | "SETTLED"
     | "CANCELLED"
-    | "ABANDONED"
-    | "SUSPENDED"
     | "TIMED_OUT";
 
 function taskEntityId(escrowId: bigint) {
@@ -28,6 +26,11 @@ async function loadTask(context: any, escrowId: bigint) {
         return existing;
     }
 
+    // When the first event we see for this escrow isn't `EscrowCreated` (e.g.
+    // handler retry, multi-chain ordering quirks, or an index rebuild replaying
+    // in a different order than the live feed), we fall back to this
+    // placeholder. The defaults deliberately use block/timestamp = 0 so that
+    // any real subsequent event wins the `bumpTask` monotonic guard below.
     return {
         id,
         escrowId: id,
@@ -63,6 +66,32 @@ async function upsertTask(context: any, escrowId: bigint, patch: Record<string, 
     context.TaskProjection.set(next);
 }
 
+// Merge `patch` into the existing projection while preserving every field the
+// stored projection already learned from a later block. The new event is
+// treated as an older out-of-order event, so we:
+//  - never overwrite `status` (newer event already moved it forward)
+//  - never rewind `lastUpdatedBlock` / `lastUpdatedAt` / `lastEventName`
+//  - fill in fields that the later event didn't yet populate (e.g. the
+//    requester, taskHash, or fund-weight metadata a late `EscrowCreated` can
+//    still contribute to a task that already entered WORKING)
+async function fillMissingFields(
+    context: any,
+    escrowId: bigint,
+    patch: Record<string, unknown>,
+    existing: Record<string, unknown>
+) {
+    const fillOnly: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(patch)) {
+        if (key === "status") continue;
+        if (existing[key] === undefined || existing[key] === null) {
+            fillOnly[key] = value;
+        }
+    }
+    if (Object.keys(fillOnly).length === 0) return;
+    const next = { ...existing, ...fillOnly };
+    context.TaskProjection.set(next);
+}
+
 function normalizeAddress(value: string | null | undefined) {
     return value ? value.toLowerCase() : undefined;
 }
@@ -83,12 +112,35 @@ async function addTimelineEvent(context: any, event: any, escrowId: bigint, even
 }
 
 async function bumpTask(context: any, event: any, escrowId: bigint, patch: Record<string, unknown>, actor?: string | null, data?: unknown) {
+    const eventBlock = BigInt(event.block.number);
+    const existing = await loadTask(context, escrowId);
+    const existingBlock = BigInt(existing.lastUpdatedBlock ?? 0n);
+
+    // Timeline events are always written: they describe a real on-chain log
+    // and tolerate duplicates thanks to their composite id (txHash:logIndex).
+    await addTimelineEvent(context, event, escrowId, String(patch.lastEventName ?? "UNKNOWN"), actor, data);
+
+    if (existingBlock > 0n && eventBlock < existingBlock) {
+        // Out-of-order late event: never rewind status or the high-water mark,
+        // but still contribute fields the projection hasn't yet learned.
+        await fillMissingFields(context, escrowId, patch, existing);
+        return;
+    }
+
+    if (existingBlock === eventBlock) {
+        // Same-block events can still arrive out of logIndex order. Apply the
+        // patch but keep the high-water mark where it was; relying on the
+        // later logIndex to win naturally would need a logIndex-aware cursor.
+        // For now we accept the latest-wins behaviour within a single block,
+        // which matches the status machine's monotonic progression along the
+        // standard event sequence (Created → Working → Delivered → ...).
+    }
+
     await upsertTask(context, escrowId, {
         ...patch,
-        lastUpdatedBlock: BigInt(event.block.number),
+        lastUpdatedBlock: eventBlock,
         lastUpdatedAt: BigInt(event.block.timestamp),
     });
-    await addTimelineEvent(context, event, escrowId, String(patch.lastEventName ?? "UNKNOWN"), actor, data);
 }
 
 async function bumpUserTipStats(context: any, user: string, direction: "sent" | "received", amount: bigint, fee: bigint, timestamp: bigint) {
@@ -163,7 +215,12 @@ AgentPactEscrow.TaskSuspendedAfterDeclines.handler(async ({ event, context }: an
         event,
         event.params.escrowId,
         {
-            status: "SUSPENDED",
+            // On-chain the contract leaves the escrow in Created state after
+            // three declines — the suspension is a platform-layer concept
+            // tracked via the event name. Keep `status` aligned with the
+            // actual contract state machine and use lastEventName for the
+            // off-chain behavioural signal.
+            status: "CREATED",
             declineCount: Number(event.params.declineCount),
             lastEventName: "TaskSuspendedAfterDeclines",
         }
@@ -176,8 +233,12 @@ AgentPactEscrow.TaskAbandoned.handler(async ({ event, context }: any) => {
         event,
         event.params.escrowId,
         {
-            provider: normalizeAddress(event.params.provider),
-            status: "ABANDONED",
+            // Abandon returns the escrow to the contract's Created state so
+            // the task becomes available for re-matching. The event name
+            // preserves the "was abandoned" context for downstream
+            // projections that care about it.
+            provider: null,
+            status: "CREATED",
             lastEventName: "TaskAbandoned",
         },
         event.params.provider
@@ -242,7 +303,9 @@ AgentPactEscrow.TaskAutoSettled.handler(async ({ event, context }: any) => {
         event,
         event.params.escrowId,
         {
-            status: "AUTO_SETTLED",
+            // Contract state is `Settled`; keep the status aligned. Consumers
+            // that need the auto-settlement signal can read `lastEventName`.
+            status: "SETTLED",
             passRate: Number(event.params.passRate),
             providerPayout: event.params.providerShare.toString(),
             requesterRefund: event.params.requesterRefund.toString(),
